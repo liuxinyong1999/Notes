@@ -1,8 +1,11 @@
 package com.lxy.notes;
 
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,35 +28,57 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final View view1 = getLayoutInflater().inflate(R.layout.float_layout, null);
+
+        final PopupWindow popupWindow = new PopupWindow(view1,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        view1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                RectF viewRecr = new RectF(view1.getLeft(), view1.getTop(), view1.getRight(), view1.getBottom());
+
+                if (!viewRecr.contains(event.getX(), event.getY()))
+                    popupWindow.dismiss();
+
+                return false;
+            }
+        });
+
+        view1.findViewById(R.id.folder)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+        view1.findViewById(R.id.file)
+                .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
 
-                View view1 = getLayoutInflater().inflate(R.layout.float_layout, null);
-
-                view1.findViewById(R.id.folder)
-                        .setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-
-                view1.findViewById(R.id.file).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-
-                PopupWindow popupWindow = new PopupWindow(view1,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                if (popupWindow.isShowing()){
+                    popupWindow.dismiss();
+                    return;
+                }
 
                 popupWindow.setAnimationStyle(R.style.popup_anim);
 
+                popupWindow.setTouchable(true);
+                popupWindow.setFocusable(true);
 
+                popupWindow.showAtLocation(fab, Gravity.TOP, 0, 0);
             }
         });
 
