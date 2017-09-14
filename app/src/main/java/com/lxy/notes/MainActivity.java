@@ -32,9 +32,7 @@ public class MainActivity extends AppCompatActivity
 
         final View view1 = findViewById(R.id.create);
 
-        final PopupWindow popupWindow = new PopupWindow(view1,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().getDecorView();
 
         view1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity
                 RectF viewRecr = new RectF(view1.getLeft(), view1.getTop(), view1.getRight(), view1.getBottom());
 
                 if (!viewRecr.contains(event.getX(), event.getY()))
-                    popupWindow.dismiss();
+                    viewIn(view1);
 
                 return false;
             }
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        popupWindow.dismiss();
+                        viewIn(view1);
                     }
                 });
 
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity
                 .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+                viewIn(view1);
             }
         });
 
@@ -72,7 +70,8 @@ public class MainActivity extends AppCompatActivity
 
                 if (view1.getVisibility() == View.VISIBLE){
                     viewOut(view1);
-                    return;
+                }else {
+                    viewIn(view1);
                 }
 
 
@@ -93,16 +92,30 @@ public class MainActivity extends AppCompatActivity
 
         view.setVisibility(View.GONE);
 
-        ValueAnimator.ofInt(0, -45).setDuration(500)
-                .addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, -45);
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 view.scrollTo(0, (Integer)animation.getAnimatedValue());
             }
         });
+        valueAnimator.start();
     }
 
-    
+    private void viewIn(final View view){
+        view.setVisibility(View.VISIBLE);
+
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(-45, 0);
+        valueAnimator.setDuration(500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.scrollTo(0, (Integer)animation.getAnimatedValue());
+            }
+        });
+        valueAnimator.start();
+    }
 
     @Override
     public void onBackPressed() {

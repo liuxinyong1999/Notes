@@ -8,21 +8,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone"
-    android:scaleY="-45"
     tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/folder"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        app:fabSize="mini"
         app:srcCompat="@drawable/folder" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/file"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        app:fabSize="mini"
         app:srcCompat="@drawable/file" />
 
 </LinearLayout>
