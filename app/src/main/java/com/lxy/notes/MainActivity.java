@@ -1,5 +1,6 @@
 package com.lxy.notes;
 
+import android.animation.ValueAnimator;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.Scroller;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final View view1 = getLayoutInflater().inflate(R.layout.float_layout, null);
+        final View view1 = findViewById(R.id.create);
 
         final PopupWindow popupWindow = new PopupWindow(view1,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        view1.findViewById(R.id.folder)
+        findViewById(R.id.folder)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        view1.findViewById(R.id.file)
+        findViewById(R.id.file)
                 .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,23 +70,12 @@ public class MainActivity extends AppCompatActivity
             @Override
            public void onClick(View view) {
 
-                if (popupWindow.isShowing()){
-                    popupWindow.dismiss();
+                if (view1.getVisibility() == View.VISIBLE){
+                    viewOut(view1);
                     return;
                 }
 
-                popupWindow.setAnimationStyle(R.style.popup_anim);
 
-                popupWindow.setTouchable(true);
-                popupWindow.setFocusable(true);
-
-                int[] p = new int[2];
-
-                fab.getLocationInWindow(p);
-
-                popupWindow.showAsDropDown(fab,
-                        fab.getWidth() / 2,
-                        -view1.getHeight() - fab.getHeight());
             }
         });
 
@@ -97,6 +88,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    private void viewOut(final View view){
+
+        view.setVisibility(View.GONE);
+
+        ValueAnimator.ofInt(0, -45).setDuration(500)
+                .addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.scrollTo(0, (Integer)animation.getAnimatedValue());
+            }
+        });
+    }
+
+    
 
     @Override
     public void onBackPressed() {
