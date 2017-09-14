@@ -78,7 +78,12 @@ public class MainActivity extends AppCompatActivity
                 popupWindow.setTouchable(true);
                 popupWindow.setFocusable(true);
 
-                popupWindow.showAtLocation(fab, Gravity.TOP, 0, 0);
+                int[] p = new int[2];
+
+                fab.getLocationOnScreen(p);
+
+                popupWindow.showAtLocation(fab, Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                        p[0], p[1]);
             }
         });
 
