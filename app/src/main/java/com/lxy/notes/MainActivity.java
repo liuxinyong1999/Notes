@@ -80,10 +80,11 @@ public class MainActivity extends AppCompatActivity
 
                 int[] p = new int[2];
 
-                fab.getLocationOnScreen(p);
+                fab.getLocationInWindow(p);
 
-                popupWindow.showAtLocation(fab, Gravity.TOP | Gravity.CENTER_HORIZONTAL,
-                        p[0], p[1]);
+                popupWindow.showAsDropDown(fab,
+                        fab.getWidth() / 2,
+                        -view1.getHeight() - fab.getHeight());
             }
         });
 
