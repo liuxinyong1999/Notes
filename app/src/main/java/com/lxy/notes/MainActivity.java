@@ -17,11 +17,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.PopupWindow;
 import android.widget.Scroller;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,25 @@ public class MainActivity extends AppCompatActivity
 
         final View view1 = findViewById(R.id.create);
 
-        getWindow().getDecorView();
+        ViewTreeObserver treeObserver = getWindow().getDecorView().getViewTreeObserver();
+
+        treeObserver.addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+
+                        height = view1.getHeight();
+
+                        view1.scrollTo(0, -height);
+
+                        getWindow().getDecorView()
+                                .getViewTreeObserver()
+                                .removeOnPreDrawListener(this);
+
+                        return false;
+                    }
+                }
+        );
 
         view1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -51,7 +72,7 @@ public class MainActivity extends AppCompatActivity
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewIn(view1);
+                        viewOut(view1);
                     }
                 });
 
@@ -59,7 +80,7 @@ public class MainActivity extends AppCompatActivity
                 .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewIn(view1);
+                viewOut(view1);
             }
         });
 
@@ -90,10 +111,9 @@ public class MainActivity extends AppCompatActivity
 
     private void viewOut(final View view){
 
-        view.setVisibility(View.GONE);
-
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, -45);
-        valueAnimator.setDuration(500);
+        ValueAnimator valueAnimator = ValueAnimator
+                .ofInt(0, -height);
+        valueAnimator.setDuration(3000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -101,13 +121,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
         valueAnimator.start();
+
+        view.setVisibility(View.GONE);
     }
 
     private void viewIn(final View view){
         view.setVisibility(View.VISIBLE);
 
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(-45, 0);
-        valueAnimator.setDuration(500);
+        ValueAnimator valueAnimator = ValueAnimator
+                .ofInt(-height, 0);
+        valueAnimator.setDuration(3000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
