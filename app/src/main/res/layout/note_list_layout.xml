@@ -4,19 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.devsmart.android.ui.HorizontalListView
-            android:id="@+id/path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.devsmart.android.ui.HorizontalListView>
-
-    </LinearLayout>
-
     <com.devsmart.android.ui.IteratorListView
         android:id="@+id/note_liat"
         android:layout_width="match_parent"

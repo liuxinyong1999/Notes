@@ -5,6 +5,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.PopupWindow;
 import android.widget.Scroller;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,26 +36,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final View view1 = findViewById(R.id.create);
-
-        ViewTreeObserver treeObserver = getWindow().getDecorView().getViewTreeObserver();
-
-        treeObserver.addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-
-                        height = view1.getHeight();
-
-                        view1.scrollTo(0, -height);
-
-                        getWindow().getDecorView()
-                                .getViewTreeObserver()
-                                .removeOnPreDrawListener(this);
-
-                        return false;
-                    }
-                }
-        );
 
         view1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -110,34 +92,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void viewOut(final View view){
-
-        ValueAnimator valueAnimator = ValueAnimator
-                .ofInt(0, -height);
-        valueAnimator.setDuration(3000);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                view.scrollTo(0, (Integer)animation.getAnimatedValue());
-            }
-        });
-        valueAnimator.start();
-
         view.setVisibility(View.GONE);
     }
 
     private void viewIn(final View view){
         view.setVisibility(View.VISIBLE);
-
-        ValueAnimator valueAnimator = ValueAnimator
-                .ofInt(-height, 0);
-        valueAnimator.setDuration(3000);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                view.scrollTo(0, (Integer)animation.getAnimatedValue());
-            }
-        });
-        valueAnimator.start();
     }
 
     @Override
