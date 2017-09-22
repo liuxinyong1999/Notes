@@ -41,7 +41,7 @@ public class FileList implements ListIterator<File> {
 
     @Override
     public int nextIndex() {
-        return 0;
+       return 0;
     }
 
     @Override
