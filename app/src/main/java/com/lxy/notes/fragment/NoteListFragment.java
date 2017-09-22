@@ -23,20 +23,7 @@ import java.util.Comparator;
 
 public class NoteListFragment extends Fragment {
 
-    private ArrayList<File> notes;
-
-    private File rootDir;
-
     public NoteListFragment(File path) {
-        rootDir = path;
-
-        notes = new ArrayList<File>(Arrays.asList(path.listFiles()));
-        Collections.sort(notes, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
     }
 
     @Override
@@ -45,9 +32,6 @@ public class NoteListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View contentView = inflater.inflate(R.layout.note_list_layout, container, false);
-
-        IteratorListView noteList = (IteratorListView) contentView.findViewById(R.id.note_liat);
-        noteList.setIteratorAdapter(notes.listIterator(), new NoteListAdapter());
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
